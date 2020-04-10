@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import os
 import csv
-import errno
 import random
 
 import click
@@ -78,8 +77,8 @@ def export(file, name, dest):
         deck.add_note(note)
 
     package.write_to_file(Path(dest).joinpath(f"{name}.apkg"))
-    print(f"Created '{name}.apkg' with {len(deck.notes)} new cards in '{dest}'.")
-    return 0
+
+    click.secho(f"Created '{name}.apkg' with {len(deck.notes)} new cards in '{dest}'.", fg = 'yellow')
 
 if __name__ == '__main__':
     export()
