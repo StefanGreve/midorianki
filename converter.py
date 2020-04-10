@@ -1,8 +1,10 @@
 #!/usr/bin/env python
+import os
 import csv
 import errno
 import random
 
+import click
 import genanki
 from pathlib import Path
 
@@ -46,15 +48,19 @@ def generate_model(model_name, model_id):
         css = card
     )
 
-def export(filename, target_dir = Path.cwd()):
+@click.command()
+@click.option('--file', type = click.Path(), help = "Path to CSV file.")
+@click.option('--name', type = click.STRING, default = "not provided", help = "Deck filename and title.")
+@click.option('--dest', type = click.Path(), default = os.getcwd(), help = "APKG target directory.")
+def export(file, name, dest):
     notes = []
-    name = Path(filename).stem
     model_id = random.randrange(1 << 30, 1 << 31)
 
-    # read csv file and create new notes
-    cwd = Path.cwd().joinpath("samples/source")
+    if name == "not provided":
+        name = Path(file).stem
 
-    with open(cwd.joinpath(filename), 'r', encoding="utf-8") as file:
+    # read csv file and create new notes
+    with open(Path(file), 'r', encoding="utf-8") as file:
         reader = csv.reader(file)
         for row in reader:
             notes.append(
@@ -71,9 +77,9 @@ def export(filename, target_dir = Path.cwd()):
     for note in notes:
         deck.add_note(note)
 
-    package.write_to_file(Path(target_dir).joinpath(f"{name}.apkg"))
-    print(f"Created deck with {len(deck.notes)} new flashcards in '{target_dir}'.")
+    package.write_to_file(Path(dest).joinpath(f"{name}.apkg"))
+    print(f"Created '{name}.apkg' with {len(deck.notes)} new cards in '{dest}'.")
     return 0
 
 if __name__ == '__main__':
-    export("風の歌を聴け.csv")
+    export()
