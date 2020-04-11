@@ -4,6 +4,10 @@
 
 This script converts from [Midori](https://apps.apple.com/us/app/midori-japanese-dictionary/id385231773) exported CSV files into [Anki](https://apps.ankiweb.net/) decks. You can also use any other CSV files that follows the  `kanji,kana,meaning` convention.
 
+## Screenshot
+
+![Screenshot](samples/screenshot.png "Screenshot")
+
 ## Installation
 
 ```bash
@@ -22,11 +26,11 @@ Deck name and title default to `--file` stem if `--name` is not explicitly speci
 
 ```powershell
     # create new deck, path to csv file resolves relative to cwd
-    python convert.py --file './path/to/file.csv'
+    python midorianki.py --file 'path/to/file.csv'
 ```
 
 ```powershell
     # specify target directory
     $DesktopPath = [Environment]::GetFolderPath("Desktop")
-    python convert.py --file './path/to/file.csv' --name 'deck title' --dest $DesktopPath
+    python midorianki.py --file 'path/to/file.csv' --name 'Deck Title' --dest $DesktopPath
 ```
