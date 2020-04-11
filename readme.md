@@ -6,7 +6,7 @@ This script converts from [Midori](https://apps.apple.com/us/app/midori-japanese
 
 ## Screenshot
 
-![Screenshot](samples/screenshot.png "Screenshot")
+![Screenshot](https://github.com/StefanGreve/midori-anki/blob/master/samples/screenshot.png "Screenshot")
 
 ## Installation
 
