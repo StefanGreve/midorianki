@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 import os
 import csv
 import random
@@ -47,18 +48,26 @@ def generate_model(model_name, model_id):
         css = card
     )
 
-@click.command()
-@click.option('--file', type = click.Path(), help = "Path to CSV file.")
-@click.option('--name', type = click.STRING, default = "not provided", help = "Deck filename and title.")
-@click.option('--dest', type = click.Path(), default = os.getcwd(), help = "APKG target directory.")
 def export(file, name, dest):
+    """
+        Function that converts CSV files from Midori to an APKG deck. Source
+        file should be in form of `kanji,kana,meaning`.
+
+        Args:
+            file: Path to CSV file.
+            name: Deck filename and title.
+            dest: APKG target directory.
+
+        Returns:
+            Zero if the method executed successfully.
+    """
+    
     notes = []
     model_id = random.randrange(1 << 30, 1 << 31)
 
     if name == "not provided":
         name = Path(file).stem
 
-    # read csv file and create new notes
     with open(Path(file), 'r', encoding="utf-8") as file:
         reader = csv.reader(file)
         for row in reader:
@@ -69,7 +78,6 @@ def export(file, name, dest):
                 )
             )
 
-    # create & store deck to target_dir
     deck = genanki.Deck(model_id, name)
     package = genanki.Package(deck)
 
@@ -80,5 +88,14 @@ def export(file, name, dest):
 
     click.secho(f"Created '{name}.apkg' with {len(deck.notes)} new cards in '{dest}'.", fg = 'yellow')
 
+    return 0
+
+@click.command()
+@click.option('--file', type = click.Path(), help = "Path to CSV file.")
+@click.option('--name', type = click.STRING, default = "not provided", help = "Deck filename and title.")
+@click.option('--dest', type = click.Path(), default = os.getcwd(), help = "APKG target directory.")
+def cli(file, name, dest):
+    export(file, name, dest)
+
 if __name__ == '__main__':
-    export()
+    cli()
