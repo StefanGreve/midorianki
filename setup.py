@@ -23,6 +23,7 @@ setup(
         'colorama',
         'genanki',
         'pathlib',
+        'tqdm'
     ],
 
     python_requires=">=3.6.1",
