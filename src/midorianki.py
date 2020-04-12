@@ -6,24 +6,21 @@ import random
 
 import click
 import genanki
+from tqdm import tqdm
 from pathlib import Path
+from colorama import Fore
 
 def generate_model(model_name, model_id):
-    font = "font-family: Meiryo"
-    card = """
-        .card {
-            font-family: arial;
-            font-size: 20px;
-            text-align: center;
-            color: black;
-            background-color: white;
-        }
-        .card1 {
-            background-color: #969696;
-        }
-        .card2 {
-            background-color: #969696;
-        }
+    """
+        Generates a model that defines the template used for the deck creation.
+        Excpects fields in `kanji,kana,meaning` convention for each single card.
+
+        Args:
+            model_name: The name of your model as displayed in Anki/Cards.
+            model_id:   An ID for keeping track of your model.
+
+        Returns:
+            A model suitable for Japanese deck creation.
     """
     return genanki.Model(
         model_id,
@@ -45,10 +42,24 @@ def generate_model(model_name, model_id):
                 'afmt' : '{{FrontSide}}<hr id="answer"><strong style="font-family: Meiryo; font-size: 60px">{{kanji}}</strong><br><span style="font-family: Meiryo; font-size: 30px;">{{kana}}</span>'
             }
         ],
-        css = card
+        css = """
+                .card {
+                    font-family: arial;
+                    font-size: 20px;
+                    text-align: center;
+                    color: black;
+                    background-color: white;
+                }
+                .card1 {
+                    background-color: #969696;
+                }
+                .card2 {
+                    background-color: #969696;
+                }
+            """
     )
 
-def export(file, name, dest):
+def export(file, name, dest, model_id = random.randrange(1 << 30, 1 << 31), leave = True):
     """
         Function that converts CSV files from Midori to an APKG deck. Source
         file should be in form of `kanji,kana,meaning`.
@@ -59,17 +70,20 @@ def export(file, name, dest):
             dest: APKG target directory.
 
         Returns:
-            Zero if the method executed successfully.
+            The ID of the generated anki model used for this deck creation.
     """
-    
+
     notes = []
-    model_id = random.randrange(1 << 30, 1 << 31)
 
     if name == "not provided":
         name = Path(file).stem
 
+    click.secho(f"Model ID: {model_id}")
+    click.secho("Generating model for notes...", nl = False)
+
     with open(Path(file), 'r', encoding="utf-8") as file:
         reader = csv.reader(file)
+
         for row in reader:
             notes.append(
                 genanki.Note(
@@ -78,17 +92,25 @@ def export(file, name, dest):
                 )
             )
 
+    click.secho("Done!")
+
     deck = genanki.Deck(model_id, name)
     package = genanki.Package(deck)
 
-    for note in notes:
+    for note in tqdm(notes,
+                     bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.GREEN, Fore.RESET),
+                     unit='note',
+                     desc = "Deck Processing",
+                     ascii= "123456789*",
+                     total = len(notes),
+                     leave = leave):
         deck.add_note(note)
 
     package.write_to_file(Path(dest).joinpath(f"{name}.apkg"))
 
-    click.secho(f"Created '{name}.apkg' with {len(deck.notes)} new cards in '{dest}'.", fg = 'yellow')
+    click.secho(f"Created '{name}.apkg' with {len(deck.notes)} new cards in '{dest}'.")
 
-    return 0
+    return model_id
 
 @click.command()
 @click.option('--file', type = click.Path(), help = "Path to CSV file.")
