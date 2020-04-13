@@ -11,7 +11,7 @@ setup(
     author = "Stefan Greve",
     keywords = "japanese anki deck",
     name = 'midorianki',
-    version = '0.9',
+    version = '1.0',
     description = "Script for converting CSV files from Midori to APKG.",
     long_description = readme,
     long_description_content_type = "text/markdown",
@@ -34,7 +34,7 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.8",
         "Topic :: Utilities",
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Operating System :: OS Independent",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
     ]

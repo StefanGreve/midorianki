@@ -12,7 +12,7 @@ from colorama import Fore
 
 def generate_model(model_name, model_id):
     """
-        Generates a model that defines the template used for the deck creation.
+        Generates a model that defines the template used for deck creation.
         Excpects fields in `kanji,kana,meaning` convention for each single card.
 
         Args:
@@ -99,7 +99,7 @@ def export(file, name, dest, model_id = random.randrange(1 << 30, 1 << 31)):
 
     for note in tqdm(notes,
                      bar_format = "{l_bar}%s{bar}%s{r_bar}" % (Fore.GREEN, Fore.RESET),
-                     unit ='note',
+                     unit = 'note',
                      desc = "Deck Processing",
                      ascii = "123456789*",
                      total = len(notes)):
