@@ -59,7 +59,7 @@ def generate_model(model_name, model_id):
             """
     )
 
-def export(file, name, dest, model_id = random.randrange(1 << 30, 1 << 31), leave = True):
+def export(file, name, dest, model_id = random.randrange(1 << 30, 1 << 31)):
     """
         Function that converts CSV files from Midori to an APKG deck. Source
         file should be in form of `kanji,kana,meaning`.
@@ -81,14 +81,14 @@ def export(file, name, dest, model_id = random.randrange(1 << 30, 1 << 31), leav
     click.secho(f"Model ID: {model_id}")
     click.secho("Generating model for notes...", nl = False)
 
-    with open(Path(file), 'r', encoding="utf-8") as file:
+    with open(Path(file), 'r', encoding = "utf-8") as file:
         reader = csv.reader(file)
 
         for row in reader:
             notes.append(
                 genanki.Note(
                     model = generate_model("JA-EN", model_id),
-                    fields = [row[0], row[1], row[2]],
+                    fields = [ row[0], row[1], row[2] ],
                 )
             )
 
@@ -98,12 +98,11 @@ def export(file, name, dest, model_id = random.randrange(1 << 30, 1 << 31), leav
     package = genanki.Package(deck)
 
     for note in tqdm(notes,
-                     bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.GREEN, Fore.RESET),
-                     unit='note',
+                     bar_format = "{l_bar}%s{bar}%s{r_bar}" % (Fore.GREEN, Fore.RESET),
+                     unit ='note',
                      desc = "Deck Processing",
-                     ascii= "123456789*",
-                     total = len(notes),
-                     leave = leave):
+                     ascii = "123456789*",
+                     total = len(notes)):
         deck.add_note(note)
 
     package.write_to_file(Path(dest).joinpath(f"{name}.apkg"))
