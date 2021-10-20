@@ -1,6 +1,12 @@
 <h1 align="center">MidoriAnki</h1>
 
 <p align="center">
+    <a href="https://github.com/StefanGreve/midorianki/actions?query=workflow%3ACI" title="Continuous Integration" target="_blank">
+        <img src="https://github.com/StefanGreve/midorianki/workflows/CI/badge.svg">
+    </a>
+    <a href="https://github.com/StefanGreve/midorianki/actions?query=workflow%3ACodeQL" title="Code QL Analysis" target="_blank">
+        <img src="https://github.com/StefanGreve/midorianki/workflows/CodeQL/badge.svg">
+    </a>
     <a href="https://github.com/StefanGreve/midorianki" title="Release Version">
         <img src="https://img.shields.io/badge/Release-2.0.0%20-blue">
     </a>
@@ -23,7 +29,7 @@ application.
 
 ## Screenshot
 
-TODO
+![Screenshot](https://raw.githubusercontent.com/StefanGreve/midorianki/abb402bd031616eb0051dc7f1199d18aa6f2e89b/samples/screenshot.png)
 
 ## Setup
 
