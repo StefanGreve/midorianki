@@ -28,7 +28,7 @@ with open("requirements/dev.txt", mode='r', encoding='utf-8') as requirements:
 
 print("reading readme file")
 
-with open("README.md", mode='r', encoding='utf-8') as readme:
+with open("readme.md", mode='r', encoding='utf-8') as readme:
     long_description = readme.read()
 
 print("running %s's setup routine" % package_name)
