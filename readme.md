@@ -1,52 +1,93 @@
-# Midori Anki
+<h1 align="center">MidoriAnki</h1>
 
-## About
+<p align="center">
+    <a href="https://github.com/StefanGreve/midorianki/actions?query=workflow%3ACI" title="Continuous Integration" target="_blank">
+        <img src="https://github.com/StefanGreve/midorianki/workflows/CI/badge.svg">
+    </a>
+    <a href="https://github.com/StefanGreve/midorianki/actions?query=workflow%3ACodeQL" title="Code QL Analysis" target="_blank">
+        <img src="https://github.com/StefanGreve/midorianki/workflows/CodeQL/badge.svg">
+    </a>
+    <a href="https://github.com/StefanGreve/midorianki" title="Release Version">
+        <img src="https://img.shields.io/badge/Release-2.0.0%20-blue">
+    </a>
+    <a title="Supported Python Versions">
+        <img src="https://img.shields.io/badge/Python-3.7%20|%203.8%20|%203.9%20|%203.10%20-blue">
+    </a>
+    <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" title="License Information" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.shields.io/badge/License-GPLv3-blue.svg">
+    </a>
+    <a href="https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/StefanGreve/midorianki" title="Software Heritage Archive" target="_blank" rel="noopener noreferrer">
+        <img src="https://archive.softwareheritage.org/badge/origin/https://github.com/StefanGreve/midorianki.git/">
+    </a>
+</p>
 
-This script converts from [Midori](https://apps.apple.com/us/app/midori-japanese-dictionary/id385231773) exported CSV files into [Anki](https://apps.ankiweb.net/) decks. You can also use any other CSV files that follows the  `kanji,kana,meaning` convention.
+This project is a CLI that converts CSV files from
+[Midori](https://apps.apple.com/us/app/midori-japanese-dictionary/id385231773)
+into [Anki](https://apps.ankiweb.net/) APKG decks. You can also use your own CSV
+files as long they follow the `kanji,kana,meaning` mandated by the `midorianki`
+application.
 
 ## Screenshot
 
-![Screenshot](https://github.com/StefanGreve/midori-anki/blob/master/samples/screenshot.png "Screenshot")
+![Screenshot](https://raw.githubusercontent.com/StefanGreve/midorianki/abb402bd031616eb0051dc7f1199d18aa6f2e89b/samples/screenshot.png)
 
-## Installation
+## Setup
 
-Install as script.
+Follow along the setup guide below to install this terminal application. Using a
+virtual environment is optional, but recommended. See also `requirements/*.txt`
+to examine the dependency graph.
 
-```bash
-    # install file dependencies
-    python -m venv venv/
-    python -m pip install --user -r requirements.txt
+<details>
+<summary>Installation</summary>
+
+[pipx](https://pypa.github.io/pipx/) is the recommended way to install
+Python applications in an isolated environment:
+
+```cli
+pipx install git+https://github.com/StefanGreve/midorianki.git
 ```
 
-Or build project from source if you want to use this script from any directory in your terminal:
+Fire up a debug build in `./venv`:
 
-```bash
-    # enter project root, check wheel installation
-    python -m pip install --user wheel
-    # build wheel and install midorianki
-    python setup.py bdist_wheel
-    python -m pip install -e .
+```cli
+git clone https://github.com/StefanGreve/midorianki.git
+cd weather/
+python -m venv venv/
+source venv/bin/activate
+pip install -r requirements/dev.txt
+pip install -e .
 ```
 
-## Usage
+</details>
 
-```powershell
-    # show help message
-    # run as file
-    python midorianki.py --help
-    # or as module if you build the wheel before
-    python -m midorianki --help
+## Basic Usage
+
+<details>
+<summary>Command Line Usage</summary>
+
+Get help:
+
+```cli
+midorianki --help
 ```
 
-Deck name and title default to `--file` stem if `--name` is not explicitly specified in the command prompt; the default target directory is the current working directory.
+Create a new Anki deck:
 
-```powershell
-    # create new deck, path to csv file resolves relative to cwd
-    python -m midorianki --file 'path/to/file.csv'
+```cli
+midorianki convert --file <csv> [--name <string>|--dest <path>]
 ```
 
-```powershell
-    # specify target directory
-    $DesktopPath = [Environment]::GetFolderPath("Desktop")
-    python -m midorianki --file 'path/to/file.csv' --name 'Deck Title' --dest $DesktopPath
+The deck name and title defaults to `csv`'s file stem if `--name` is not specified.
+The default target directory is always the current working directory.
+
+</details>
+
+## Report an Issue
+
+Did something went wrong? Copy and paste the information from
+
+```cli
+midorianki log --list
 ```
+
+to file a new bug report.
