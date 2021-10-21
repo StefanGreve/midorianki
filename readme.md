@@ -8,7 +8,7 @@
         <img src="https://github.com/StefanGreve/midorianki/workflows/CodeQL/badge.svg">
     </a>
     <a href="https://github.com/StefanGreve/midorianki" title="Release Version">
-        <img src="https://img.shields.io/badge/Release-2.0.0%20-blue">
+        <img src="https://img.shields.io/badge/Release-2.0.1%20-blue">
     </a>
     <a title="Supported Python Versions">
         <img src="https://img.shields.io/badge/Python-3.7%20|%203.8%20|%203.9%20|%203.10%20-blue">
@@ -24,8 +24,8 @@
 This project is a CLI that converts CSV files from
 [Midori](https://apps.apple.com/us/app/midori-japanese-dictionary/id385231773)
 into [Anki](https://apps.ankiweb.net/) APKG decks. You can also use your own CSV
-files as long they follow the `kanji,kana,meaning` mandated by the `midorianki`
-application.
+files as long they follow the `kanji,kana,meaning` convention mandated by the
+`midorianki` application.
 
 ## Screenshot
 
@@ -77,7 +77,7 @@ Create a new Anki deck:
 midorianki convert --file <csv> [--name <string>|--dest <path>]
 ```
 
-The deck name and title defaults to `csv`'s file stem if `--name` is not specified.
+The deck name defaults to `csv`'s file stem if `--name` is not specified.
 The default target directory is always the current working directory.
 
 </details>

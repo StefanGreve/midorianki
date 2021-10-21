@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
 """
-CLI for transforming CSV fi
-les from Midori to into APKG decks.
+CLI for transforming CSV files from Midori into APKG decks.
+
 Copyright (C) 2020  Stefan Greve (greve.stefan@outlook.jp)
+
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -21,14 +22,15 @@ from __future__ import annotations
 import csv
 import random
 from pathlib import Path
-from typing import Dict, Union
+from typing import Dict, Iterable, Union
 
 import genanki
 from tqdm import tqdm
 
-from . import utils, config
+from . import config, utils
 
-def progressbar_options(iterable, desc, unit, color=config.GREEN, char='\u25CB', disable=False) -> dict:
+
+def progressbar_options(iterable: Iterable, desc: str, unit: str, color: str=config.GREEN, char: str='\u25CB', disable: bool=False) -> dict:
     """
     Return custom optional arguments for `tqdm` progressbars.
     """
@@ -51,20 +53,20 @@ def generate_model(model_name: str, model_id: int) -> Dict:
         model_id,
         model_name,
         fields = [
-            { 'name' : 'kanji' },
-            { 'name' : 'kana' },
-            { 'name' : 'meaning' }
+            { 'name': 'kanji' },
+            { 'name': 'kana' },
+            { 'name': 'meaning' }
         ],
         templates = [
             {
-                'name' : 'Forward Card Template',
-                'qfmt' : '<strong style="font-family: Meiryo; font-size: 60px;">{{kanji}}</strong>',
-                'afmt' : '{{FrontSide}}<hr id="answer"><span style="font-family: Meiryo; font-size: 30px;">{{kana}}</span><br><strong style="font-size: 40px;">{{meaning}}</strong>'
+                'name': 'Forward Card Template',
+                'qfmt': '<strong style="font-family: Meiryo; font-size: 60px;">{{kanji}}</strong>',
+                'afmt': '{{FrontSide}}<hr id="answer"><span style="font-family: Meiryo; font-size: 30px;">{{kana}}</span><br><strong style="font-size: 40px;">{{meaning}}</strong>'
             },
             {
-                'name' : 'Backward Card Template',
-                'qfmt' : '<strong style="font-size: 40px;">{{meaning}}</strong>',
-                'afmt' : '{{FrontSide}}<hr id="answer"><strong style="font-family: Meiryo; font-size: 60px">{{kanji}}</strong><br><span style="font-family: Meiryo; font-size: 30px;">{{kana}}</span>'
+                'name': 'Backward Card Template',
+                'qfmt': '<strong style="font-size: 40px;">{{meaning}}</strong>',
+                'afmt': '{{FrontSide}}<hr id="answer"><strong style="font-family: Meiryo; font-size: 60px">{{kanji}}</strong><br><span style="font-family: Meiryo; font-size: 30px;">{{kana}}</span>'
             }
         ],
         css = """
@@ -87,16 +89,11 @@ def generate_model(model_name: str, model_id: int) -> Dict:
 def export(file: Union[str, Path], name: str, dest: Union[str, Path], verbose: bool=False) -> int:
     """
     Converts CSV files into APKG decks. Expects all fields in the CSV file to
-    follow the order of `kanji,kana,meaning`.
+    follow the order of `kanji,kana,meaning`. Returns a randomly generated model
+    id.
     """
-
     notes = []
     model_id = random.randrange(1 << 30, 1 << 31)
-    name = name or Path(file).stem
-
-    utils.print_on_info(f"Model ID: {model_id}", verbose)
-    utils.print_on_info(f"Deck Name: {name}", verbose)
-    utils.print_on_info("Generating model for notes... ", verbose, end='')
 
     with open(file, mode='r', encoding="utf-8") as file_handler:
         reader = csv.reader(file_handler)
@@ -104,20 +101,19 @@ def export(file: Union[str, Path], name: str, dest: Union[str, Path], verbose: b
             notes.append(
                 genanki.Note(
                     model = generate_model("JA-EN", model_id),
-                    fields = [ row[0], row[1], row[2] ],
+                    fields = [row[0], row[1], row[2]],
                 )
             )
 
-    if verbose: print("Done!")
-
-    deck = genanki.Deck(model_id, name)
+    deck = genanki.Deck(model_id, name or Path(file).stem)
     package = genanki.Package(deck)
 
-    for note in tqdm(**progressbar_options(notes, f"Convert {name}", 'note', disable=verbose)):
+    for note in tqdm(**progressbar_options(notes, f"Convert ID={model_id}", 'note', disable=verbose)):
         deck.add_note(note)
 
-    package.write_to_file(Path(dest).joinpath(f"{name}.apkg"))
+    deck_name = Path(dest).joinpath(f"{deck.name}.apkg")
+    package.write_to_file(deck_name)
 
-    utils.print_on_success(f"Created '{name}.apkg' containing {len(deck.notes)} new cards in {str(dest)!r}.", verbose)
+    utils.print_on_success(f"Created {str(deck_name.name)!r} with {len(deck.notes)} new cards in {str(deck_name.parent)!r}.", verbose)
 
     return model_id

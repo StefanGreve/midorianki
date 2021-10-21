@@ -26,7 +26,7 @@ def cli():
     convert_parser = subparser.add_parser('convert', description=convert_help_msg, help=convert_help_msg)
     convert_parser.add_argument('--file', type=Path, metavar='PATH', required=True, help="path to CSV file")
     convert_parser.add_argument('--dest', type=Path, metavar='PATH', nargs='?', default=Path.cwd(), help="APKG target directory (default: %(default)s)")
-    convert_parser.add_argument('--name', type=str, nargs='?', default=None, help="deck filename and title") # TODO: default value?
+    convert_parser.add_argument('--name', type=str, nargs='?', default=None, help="deck filename and title (default: file stem)")
 
     log_help_msg = "access the CLI logger"
     log_parser = subparser.add_parser('log', description=log_help_msg, help=log_help_msg)
