@@ -1,2 +1,2 @@
-genanki==0.11.0
+genanki==0.12.0
 tqdm==4.62.3
