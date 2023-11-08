@@ -18,7 +18,7 @@ setup(
     name="midorianki",
     version="3.0.0",
     description="Tool for converting CSV files from Midori into APKG decks.",
-    long_description=read_file("README.md"),
+    long_description=read_file("readme.md"),
     long_description_content_type="text/markdown",
     url="https://github.com/StefanGreve/midorianki",
     project_urls={
