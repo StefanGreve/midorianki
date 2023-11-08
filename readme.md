@@ -1,14 +1,14 @@
 <h1 align="center">MidoriAnki</h1>
 
 <p align="center">
-    <a href="https://github.com/StefanGreve/midorianki/actions?query=workflow%3ACI" title="Continuous Integration" target="_blank">
-        <img src="https://github.com/StefanGreve/midorianki/workflows/CI/badge.svg">
+    <a href="https://github.com/StefanGreve/midorianki/actions/workflows/python-app.yml" title="Continuous Integration" target="_blank">
+        <img src="https://github.com/StefanGreve/midorianki/actions/workflows/python-app.yml/badge.svg">
     </a>
-    <a href="https://github.com/StefanGreve/midorianki/actions?query=workflow%3ACodeQL" title="Code QL Analysis" target="_blank">
-        <img src="https://github.com/StefanGreve/midorianki/workflows/CodeQL/badge.svg">
+    <a href="https://github.com/StefanGreve/midorianki/actions/workflows/codeql-analysis.yml" title="Code QL Analysis" target="_blank">
+        <img src="https://github.com/StefanGreve/midorianki/actions/workflows/codeql-analysis.yml/badge.svg">
     </a>
     <a href="https://github.com/StefanGreve/midorianki" title="Release Version">
-        <img src="https://img.shields.io/badge/Release-2.0.1%20-blue">
+        <img src="https://img.shields.io/badge/Release-3.0.0%20-blue">
     </a>
     <a title="Supported Python Versions">
         <img src="https://img.shields.io/badge/Python-3.11%20-blue">

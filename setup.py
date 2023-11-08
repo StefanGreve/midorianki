@@ -28,7 +28,7 @@ setup(
     },
     python_requires=">=3.11",
     install_requires=read_file("requirements/release.txt", split=True),
-    extra_requires={
+    extras_require={
         "dev": read_file("requirements/development.txt", split=True)[1:],
     },
     include_package_data=True,
