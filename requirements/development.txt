@@ -1,0 +1,6 @@
+-r release.txt
+build==1.0.3
+wheel==0.41.2
+twine==4.0.2
+setuptools==68.2.2
+pytest==7.4.2

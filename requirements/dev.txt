@@ -1,2 +1,0 @@
--r release.txt
-check-manifest==0.47
