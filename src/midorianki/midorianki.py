@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 """
-CLI for transforming CSV files from Midori into APKG decks.
+Tool for converting CSV files from Midori into APKG decks.
 
-Copyright (C) 2020  Stefan Greve (greve.stefan@outlook.jp)
+Copyright (C) 2020-2023 Stefan Greve (greve.stefan@outlook.jp)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,48 +25,49 @@ from pathlib import Path
 from typing import Dict, Iterable, Union
 
 import genanki
+from colorama import Fore, Style
 from tqdm import tqdm
 
-from . import config, utils
+from .utils import print_on_success
 
 
-def progressbar_options(iterable: Iterable, desc: str, unit: str, color: str=config.GREEN, char: str='\u25CB', disable: bool=False) -> dict:
+def progressbar_options(iterable: Iterable, desc: str, unit: str, color: str=Fore.GREEN, char: str="\u25CB", disable: bool=False) -> Dict:
     """
-    Return custom optional arguments for `tqdm` progressbars.
+    Return custom optional arguments for `tqdm` progress bars.
     """
     return {
-        'iterable': iterable,
-        'bar_format': "{l_bar}%s{bar}%s{r_bar}" % (color, config.RESET_ALL),
-        'ascii': char.rjust(9, ' '),
-        'desc': desc,
-        'unit': unit.rjust(1, ' '),
-        'total': len(iterable),
-        'disable': not disable
+        "iterable": iterable,
+        "bar_format": "{l_bar}%s{bar}%s{r_bar}" % (color, Style.RESET_ALL),
+        "ascii": char.rjust(9, " "),
+        "desc": desc,
+        "unit": unit.rjust(1, " "),
+        "total": len(iterable),
+        "disable": not disable
     }
 
 def generate_model(model_name: str, model_id: int) -> Dict:
     """
     Generates a model that defines the template used for deck this creation.
-    Excpects all fields to follow the order of `kanji,kana,meaning`.
+    Expects all fields to follow the order of `kanji,kana,meaning`.
     """
     return genanki.Model(
         model_id,
         model_name,
         fields = [
-            { 'name': 'kanji' },
-            { 'name': 'kana' },
-            { 'name': 'meaning' }
+            { "name": "kanji" },
+            { "name": "kana" },
+            { "name": "meaning" }
         ],
         templates = [
             {
-                'name': 'Forward Card Template',
-                'qfmt': '<strong style="font-family: Meiryo; font-size: 60px;">{{kanji}}</strong>',
-                'afmt': '{{FrontSide}}<hr id="answer"><span style="font-family: Meiryo; font-size: 30px;">{{kana}}</span><br><strong style="font-size: 40px;">{{meaning}}</strong>'
+                "name": "Forward Card Template",
+                "qfmt": "<strong style=\"font-family: Meiryo; font-size: 60px;\">{{kanji}}</strong>",
+                "afmt": "{{FrontSide}}<hr id=\"answer\"><span style=\"font-family: Meiryo; font-size: 30px;\">{{kana}}</span><br><strong style=\"font-size: 40px;\">{{meaning}}</strong>"
             },
             {
-                'name': 'Backward Card Template',
-                'qfmt': '<strong style="font-size: 40px;">{{meaning}}</strong>',
-                'afmt': '{{FrontSide}}<hr id="answer"><strong style="font-family: Meiryo; font-size: 60px">{{kanji}}</strong><br><span style="font-family: Meiryo; font-size: 30px;">{{kana}}</span>'
+                "name": "Backward Card Template",
+                "qfmt": "<strong style=\"font-size: 40px;\">{{meaning}}</strong>",
+                "afmt": "{{FrontSide}}<hr id=\"answer\"><strong style=\"font-family: Meiryo; font-size: 60px\">{{kanji}}</strong><br><span style=\"font-family: Meiryo; font-size: 30px;\">{{kana}}</span>"
             }
         ],
         css = """
@@ -95,7 +96,7 @@ def export(file: Union[str, Path], name: str, dest: Union[str, Path], verbose: b
     notes = []
     model_id = random.randrange(1 << 30, 1 << 31)
 
-    with open(file, mode='r', encoding="utf-8") as file_handler:
+    with open(file, mode="r", encoding="utf-8") as file_handler:
         reader = csv.reader(file_handler)
         for row in reader:
             notes.append(
@@ -108,12 +109,12 @@ def export(file: Union[str, Path], name: str, dest: Union[str, Path], verbose: b
     deck = genanki.Deck(model_id, name or Path(file).stem)
     package = genanki.Package(deck)
 
-    for note in tqdm(**progressbar_options(notes, f"Convert ID={model_id}", 'note', disable=verbose)):
+    for note in tqdm(**progressbar_options(notes, f"Convert ID={Fore.CYAN}{model_id}{Style.RESET_ALL}", "note", disable=verbose)):
         deck.add_note(note)
 
-    deck_name = Path(dest).joinpath(f"{deck.name}.apkg")
+    deck_name = Path(dest) / f"{deck.name}.apkg"
     package.write_to_file(deck_name)
 
-    utils.print_on_success(f"Created {str(deck_name.name)!r} with {len(deck.notes)} new cards in {str(deck_name.parent)!r}.", verbose)
+    print_on_success(f"Created {str(deck_name.name)!r} with {len(deck.notes)} new cards in {str(deck_name.parent)!r}.", verbose)
 
     return model_id

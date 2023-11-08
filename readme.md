@@ -11,13 +11,10 @@
         <img src="https://img.shields.io/badge/Release-2.0.1%20-blue">
     </a>
     <a title="Supported Python Versions">
-        <img src="https://img.shields.io/badge/Python-3.7%20|%203.8%20|%203.9%20|%203.10%20-blue">
+        <img src="https://img.shields.io/badge/Python-3.11%20-blue">
     </a>
     <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" title="License Information" target="_blank" rel="noopener noreferrer">
         <img src="https://img.shields.io/badge/License-GPLv3-blue.svg">
-    </a>
-    <a href="https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/StefanGreve/midorianki" title="Software Heritage Archive" target="_blank" rel="noopener noreferrer">
-        <img src="https://archive.softwareheritage.org/badge/origin/https://github.com/StefanGreve/midorianki.git/">
     </a>
 </p>
 
@@ -40,21 +37,21 @@ to examine the dependency graph.
 <details>
 <summary>Installation</summary>
 
-[pipx](https://pypa.github.io/pipx/) is the recommended way to install
+[`pipx`](https://pypa.github.io/pipx/) is the recommended way to install
 Python applications in an isolated environment:
 
-```cli
+```bash
 pipx install git+https://github.com/StefanGreve/midorianki.git
 ```
 
 Fire up a debug build in `./venv`:
 
-```cli
+```bash
 git clone https://github.com/StefanGreve/midorianki.git
 cd weather/
 python -m venv venv/
 source venv/bin/activate
-pip install -r requirements/dev.txt
+pip install -r requirements/development.txt
 pip install -e .
 ```
 
@@ -80,14 +77,12 @@ midorianki convert --file <csv> [--name <string>|--dest <path>]
 The deck name defaults to `csv`'s file stem if `--name` is not specified.
 The default target directory is always the current working directory.
 
-</details>
+### Example
 
-## Report an Issue
-
-Did something went wrong? Copy and paste the information from
-
-```cli
-midorianki log --list
+```bash
+curl https://gist.githubusercontent.com/StefanGreve/5d8d3111eb4e29bbce691f6ef2ebb656/raw/4a8b081086fa4174b64c6f86be33fb07fa36590f/kaze-no-uta-wo-kike.csv --output test.csv
+# creates a deck_title.apkg file in the home directory
+midorianki convert --file ./test.csv --name "deck_title" --dest $HOME
 ```
 
-to file a new bug report.
+</details>
