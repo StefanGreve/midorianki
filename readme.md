@@ -48,7 +48,7 @@ Fire up a debug build in `./venv`:
 
 ```bash
 git clone https://github.com/StefanGreve/midorianki.git
-cd weather/
+cd midorianki/
 python -m venv venv/
 source venv/bin/activate
 pip install -r requirements/development.txt
