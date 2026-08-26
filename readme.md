@@ -11,7 +11,7 @@
         <img src="https://img.shields.io/badge/Release-3.0.0%20-blue">
     </a>
     <a title="Supported Python Versions">
-        <img src="https://img.shields.io/badge/Python-3.11%20-blue">
+        <img src="https://img.shields.io/badge/Python-3.11%20--%203.14-blue">
     </a>
     <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" title="License Information" target="_blank" rel="noopener noreferrer">
         <img src="https://img.shields.io/badge/License-GPLv3-blue.svg">
@@ -30,30 +30,29 @@ files as long they follow the `kanji,kana,meaning` convention mandated by the
 
 ## Setup
 
-Follow along the setup guide below to install this terminal application. Using a
-virtual environment is optional, but recommended. See also `requirements/*.txt`
-to examine the dependency graph.
+Follow along the setup guide below to install this terminal application. See also
+`pyproject.toml` to examine the dependency graph.
 
 <details>
 <summary>Installation</summary>
 
-[`pipx`](https://pypa.github.io/pipx/) is the recommended way to install
-Python applications in an isolated environment:
+[`uv`](https://docs.astral.sh/uv/) is the recommended way to install this
+Python application in an isolated environment:
 
 ```bash
-pipx install git+https://github.com/StefanGreve/midorianki.git
+uv tool install git+https://github.com/StefanGreve/midorianki.git
 ```
 
-Fire up a debug build in `./venv`:
+Set up a development environment with `uv`, which creates a managed virtual
+environment and installs the runtime and dev dependencies:
 
 ```bash
 git clone https://github.com/StefanGreve/midorianki.git
 cd midorianki/
-python -m venv venv/
-source venv/bin/activate
-pip install -r requirements/development.txt
-pip install -e .
+uv sync --all-groups
 ```
+
+Run the application from the development environment with `uv run midorianki`.
 
 </details>
 
