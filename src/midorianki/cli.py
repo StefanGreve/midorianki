@@ -1,11 +1,26 @@
 #!/usr/bin/env python3
 
+"""Command-line argument parser for the midorianki application."""
+
 from argparse import ArgumentParser, HelpFormatter
 from pathlib import Path
 
 
 def build_parser(package_name: str, version: str, description: str) -> ArgumentParser:
-    formatter = lambda prog: HelpFormatter(prog,max_help_position=52)
+    """
+    Build the argument parser for the command-line interface.
+
+    Args:
+        package_name: Program name shown in usage and version output.
+        version: Version string reported by ``--version``.
+        description: Text shown in the top-level help.
+
+    Returns:
+        The configured argument parser.
+    """
+    def formatter(prog):
+        return HelpFormatter(prog, max_help_position=52)
+
     parser = ArgumentParser(prog=package_name, description=description, formatter_class=formatter)
     parser._positionals.title = "Commands"
     parser._optionals.title = "Arguments"

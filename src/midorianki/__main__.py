@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 
+"""Command-line entry point for the midorianki application."""
+
 from .cli import build_parser
+from .logger import init_logger
 from .metadata import __package__, __version__
 from .midorianki import export
-from .logger import init_logger
 
 
 def main() -> None:
+    """Parse command-line arguments and run the requested command."""
     description = "Tool for converting CSV files from Midori into APKG decks."
     parser = build_parser(__package__, __version__, description)
     args = parser.parse_args()

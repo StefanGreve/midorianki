@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 
+"""General-purpose helpers for the midorianki package."""
+
 import os
 import platform
 from pathlib import Path
-from typing import Union
 
-def get_resource_path(package_name: Union[str, Path]) -> Path:
+
+def get_resource_path(package_name: str | Path) -> Path:
     """
-    Return a platform-specific resource directory for storing globally
-    accessible package files.
+    Return a platform-specific resource directory for package files.
 
-    The directory is created if it does not already exist.
+    Globally accessible package files are stored here; the directory is created
+    if it does not already exist.
 
     Args:
         package_name: Name used as the leaf directory under the platform's

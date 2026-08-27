@@ -21,14 +21,10 @@ import csv
 import logging
 import random
 from pathlib import Path
-from typing import Union
 
 import genanki
-
 from rich.progress import track
 
-# Records propagate to the "midorianki" package logger, which init_logger()
-# configures with the file and console handlers.
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -82,7 +78,7 @@ def generate_model(model_name: str, model_id: int) -> genanki.Model:
             """
     )
 
-def export(file: Union[str, Path], name: str, dest: Union[str, Path], verbose: bool=False, logger: logging.Logger=_LOGGER) -> int:
+def export(file: str | Path, name: str, dest: str | Path, verbose: bool=False, logger: logging.Logger=_LOGGER) -> int:
     """
     Convert a Midori CSV file into an APKG deck.
 
@@ -104,7 +100,7 @@ def export(file: Union[str, Path], name: str, dest: Union[str, Path], verbose: b
     notes = []
     model_id = random.randrange(1 << 30, 1 << 31)
 
-    with open(file, mode="r", encoding="utf-8") as file_handler:
+    with open(file, encoding="utf-8") as file_handler:
         reader = csv.reader(file_handler)
         for row in reader:
             notes.append(

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "midorianki"
-version = "3.0.0"
+version = "3.1.0"
 description = "Tool for converting CSV files from Midori into APKG decks."
 readme = "readme.md"
 requires-python = ">=3.11"
@@ -42,7 +42,30 @@ Changelog = "https://github.com/StefanGreve/midorianki/blob/master/CHANGELOG.md"
 midorianki = "midorianki.__main__:main"
 
 [dependency-groups]
-dev = []
+dev = [
+    "ruff>=0.16.4",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/midorianki"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "D",   # pydocstyle (docstring conventions)
+]
+ignore = [
+    "E501",  # line-too-long: delegated to `ruff format`, which leaves string literals intact
+    "D212",  # multi-line-summary-first-line: this project starts the summary on the second line
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"

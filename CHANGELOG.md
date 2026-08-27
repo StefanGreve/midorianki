@@ -10,6 +10,8 @@
   only when enabled, and errors are always reported to stderr.
 - Short, color-highlighted log level names on the console (`DBG`, `INF`, `WRN`, `ERR`, `FTL`),
   rendered as `[ INF ]`.
+- [`ruff`](https://docs.astral.sh/ruff/) to the `dev` dependency group for linting and formatting,
+  configured in `pyproject.toml` to enforce Google-style docstrings.
 
 ### Changed
 

@@ -8,7 +8,7 @@
         <img src="https://github.com/StefanGreve/midorianki/actions/workflows/codeql-analysis.yml/badge.svg">
     </a>
     <a href="https://github.com/StefanGreve/midorianki" title="Release Version">
-        <img src="https://img.shields.io/badge/Release-3.0.0%20-blue">
+        <img src="https://img.shields.io/badge/Release-3.1.0%20-blue">
     </a>
     <a title="Supported Python Versions">
         <img src="https://img.shields.io/badge/Python-3.11%20--%203.14-blue">
@@ -86,12 +86,16 @@ midorianki convert --file ./test.csv --name "deck_title" --dest $HOME
 
 </details>
 
-## Development
-
-<details>
-<summary>Conventions</summary>
+## Developer Notes
 
 Public functions are documented with
 [Google-style docstrings](https://github.com/google/styleguide/blob/gh-pages/pyguide.md#38-comments-and-docstrings).
 
-</details>
+[`ruff`](https://docs.astral.sh/ruff/) enforces linting (including the docstring
+convention) and formatting; its configuration lives in `pyproject.toml`. Run the
+checks from the development environment:
+
+```bash
+uv run ruff check       # lint
+uv run ruff format      # apply formatting (--check to verify only)
+```
