@@ -3,16 +3,15 @@
 import logging
 import os
 import platform
-import sys
 from logging import Logger
 from pathlib import Path
 from typing import Union
 
-from colorama import Fore, Style
+from rich.console import Console
+from rich.text import Text
+from rich.theme import Theme
 
 from .metadata import __package__
-
-#region logging
 
 def get_resource_path(package_name: Union[str, Path]) -> Path:
     """
@@ -63,42 +62,62 @@ logger.addHandler(file_handler)
 # monkey-patch for safe use
 logger.shutdown = lambda: shutdown(logger)
 
-#endregion logging
-
 #region terminal formatting
+
+_theme = Theme({
+    "success": "bold green",
+    "info": "bold yellow",
+    "warning": "bold yellow",
+    "error": "bold red",
+    "path": "cyan",
+})
+
+console = Console(theme=_theme)
+error_console = Console(stderr=True, theme=_theme)
+
+def _print_status(target: Console, label: str, style: str, message: str, verbose: bool, **kwargs) -> None:
+    if not verbose:
+        return
+
+    # The label is a literal Text so its own brackets never parse as markup; the
+    # message is passed as a plain string, so callers can embed rich markup
+    # (e.g. "[bold yellow]path[/]"). Pass markup=False (or rich.markup.escape the
+    # message) when it may contain raw brackets from data such as file paths.
+    label_text = Text(label.ljust(12), style=style)
+    kwargs.setdefault("highlight", False)
+    target.print(label_text, str(message), sep="", **kwargs)
 
 def print_on_success(message: str, verbose: bool=True, **kwargs) -> None:
     """
     Print a formatted success message if verbose is enabled.
     """
-    if not verbose: return
-    print(f"{Style.BRIGHT}{Fore.GREEN}{'[  OK  ]'.ljust(12, ' ')}{Style.RESET_ALL}{message}", **kwargs)
+    _print_status(console, "[  OK  ]", "success", message, verbose, **kwargs)
 
 def print_on_info(message: str, verbose: bool=True, **kwargs) -> None:
     """
-    Print a formatted warning message if verbose is enabled.
+    Print a formatted info message if verbose is enabled.
     """
-    if not verbose: return
-    print(f"{Style.BRIGHT}{Fore.YELLOW}{'[ INFO ]'.ljust(12, ' ')}{Style.RESET_ALL}{message}", **kwargs)
+    _print_status(console, "[ INFO ]", "info", message, verbose, **kwargs)
 
 def print_on_warning(message: str, verbose: bool=True, **kwargs) -> None:
     """
     Print a formatted warning message if verbose is enabled.
     """
-    if not verbose: return
-    print(f"{Style.BRIGHT}{Fore.YELLOW}{'[ WARNING ]'.ljust(12, ' ')}{Style.RESET_ALL}{message}", **kwargs)
+    _print_status(console, "[ WARNING ]", "warning", message, verbose, **kwargs)
 
 def print_on_error(message: str, verbose: bool=True, **kwargs) -> None:
     """
-    Print a formatted error message if verbose is enabled.
+    Print a formatted error message to stderr if verbose is enabled.
     """
-    if not verbose: return
-    print(f"{Style.BRIGHT}{Fore.RED}{'[ ERROR ]'.ljust(12, ' ')}{Style.RESET_ALL}{message}", file=sys.stderr, **kwargs)
+    # Exception text is arbitrary data: a stray "[/]" or malformed tag would
+    # otherwise raise rich.errors.MarkupError from inside a caller's except block.
+    kwargs.setdefault("markup", False)
+    _print_status(error_console, "[ ERROR ]", "error", message, verbose, **kwargs)
 
-def clear():
+def clear() -> None:
     """
     Reset terminal screen.
     """
-    os.system('cls' if platform.system() == 'Windows' else 'clear')
+    console.clear()
 
 #endregion terminal formatting

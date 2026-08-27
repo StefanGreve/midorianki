@@ -15,9 +15,8 @@ authors = [
     { name = "Stefan Greve", email = "greve.stefan@outlook.jp" },
 ]
 dependencies = [
-    "genanki==0.13.0",
-    "tqdm==4.66.3",
-    "colorama==0.4.6",
+    "genanki>=0.13.1",
+    "rich>=15.0.0",
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -43,10 +42,7 @@ Changelog = "https://github.com/StefanGreve/midorianki/blob/master/CHANGELOG.md"
 midorianki = "midorianki.__main__:main"
 
 [dependency-groups]
-dev = [
-    "pytest==7.4.2",
-    "twine==4.0.2",
-]
+dev = []
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/midorianki"]

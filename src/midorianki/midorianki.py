@@ -3,7 +3,7 @@
 """
 Tool for converting CSV files from Midori into APKG decks.
 
-Copyright (C) 2020-2023 Stefan Greve (greve.stefan@outlook.jp)
+Copyright (C) 2020-2026 Stefan Greve (stefan.ohlsen.greve@gmail.com)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,33 +17,17 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from __future__ import annotations
-
 import csv
 import random
 from pathlib import Path
-from typing import Dict, Iterable, Union
+from typing import Dict, Union
 
 import genanki
-from colorama import Fore, Style
-from tqdm import tqdm
+
+from rich.progress import track
 
 from .utils import print_on_success
 
-
-def progressbar_options(iterable: Iterable, desc: str, unit: str, color: str=Fore.GREEN, char: str="\u25CB", disable: bool=False) -> Dict:
-    """
-    Return custom optional arguments for `tqdm` progress bars.
-    """
-    return {
-        "iterable": iterable,
-        "bar_format": "{l_bar}%s{bar}%s{r_bar}" % (color, Style.RESET_ALL),
-        "ascii": char.rjust(9, " "),
-        "desc": desc,
-        "unit": unit.rjust(1, " "),
-        "total": len(iterable),
-        "disable": not disable
-    }
 
 def generate_model(model_name: str, model_id: int) -> Dict:
     """
@@ -109,12 +93,12 @@ def export(file: Union[str, Path], name: str, dest: Union[str, Path], verbose: b
     deck = genanki.Deck(model_id, name or Path(file).stem)
     package = genanki.Package(deck)
 
-    for note in tqdm(**progressbar_options(notes, f"Convert ID={Fore.CYAN}{model_id}{Style.RESET_ALL}", "note", disable=verbose)):
+    for note in track(notes, description=f"[bold blue] Convert ID={model_id}", disable=not verbose):
         deck.add_note(note)
 
     deck_name = Path(dest) / f"{deck.name}.apkg"
     package.write_to_file(deck_name)
 
-    print_on_success(f"Created {str(deck_name.name)!r} with {len(deck.notes)} new cards in {str(deck_name.parent)!r}.", verbose)
+    print_on_success(f"Created [path]{str(deck_name.name)!r}[/] with {len(deck.notes)} new cards in [path]{str(deck_name.parent)!r}[/].", verbose)
 
     return model_id
