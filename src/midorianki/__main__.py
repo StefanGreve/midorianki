@@ -27,5 +27,6 @@ def main() -> None:
     except Exception as error:
         logger.error(str(error))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

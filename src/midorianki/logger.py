@@ -28,12 +28,14 @@ _LEVEL_STYLES = {
 
 _BRACKET_STYLE = "grey50"
 
+
 class BracketRichHandler(RichHandler):
     """
     Render the level name in muted brackets with the name color-highlighted.
 
     Produces console output such as ``[ INF ]``.
     """
+
     def get_level_text(self, record: logging.LogRecord) -> Text:
         """
         Return the bracketed, color-highlighted level text for a record.
@@ -46,6 +48,7 @@ class BracketRichHandler(RichHandler):
         """
         style = _LEVEL_STYLES.get(record.levelno, "logging.level.info")
         return Text.assemble(("[ ", _BRACKET_STYLE), (record.levelname, style), (" ]", _BRACKET_STYLE))
+
 
 def init_logger(enable_console_logger: bool) -> Logger:
     """
@@ -72,7 +75,9 @@ def init_logger(enable_console_logger: bool) -> Logger:
 
     log_file_path = get_resource_path(__package__) / "error.log"
     _file_handler = logging.FileHandler(log_file_path)
-    _file_handler.setFormatter(logging.Formatter('%(asctime)s::%(levelname)s::%(lineno)d::%(name)s::%(message)s', datefmt='%Y-%m-%d %H:%M:%S'))
+    _file_handler.setFormatter(
+        logging.Formatter("%(asctime)s::%(levelname)s::%(lineno)d::%(name)s::%(message)s", datefmt="%Y-%m-%d %H:%M:%S")
+    )
     logger.addHandler(_file_handler)
 
     error_console = Console(stderr=True)

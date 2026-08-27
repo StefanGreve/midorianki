@@ -44,24 +44,20 @@ def generate_model(model_name: str, model_id: int) -> genanki.Model:
     return genanki.Model(
         model_id,
         model_name,
-        fields = [
-            { "name": "kanji" },
-            { "name": "kana" },
-            { "name": "meaning" }
-        ],
-        templates = [
+        fields=[{"name": "kanji"}, {"name": "kana"}, {"name": "meaning"}],
+        templates=[
             {
                 "name": "Forward Card Template",
-                "qfmt": "<strong style=\"font-family: Meiryo; font-size: 60px;\">{{kanji}}</strong>",
-                "afmt": "{{FrontSide}}<hr id=\"answer\"><span style=\"font-family: Meiryo; font-size: 30px;\">{{kana}}</span><br><strong style=\"font-size: 40px;\">{{meaning}}</strong>"
+                "qfmt": '<strong style="font-family: Meiryo; font-size: 60px;">{{kanji}}</strong>',
+                "afmt": '{{FrontSide}}<hr id="answer"><span style="font-family: Meiryo; font-size: 30px;">{{kana}}</span><br><strong style="font-size: 40px;">{{meaning}}</strong>',
             },
             {
                 "name": "Backward Card Template",
-                "qfmt": "<strong style=\"font-size: 40px;\">{{meaning}}</strong>",
-                "afmt": "{{FrontSide}}<hr id=\"answer\"><strong style=\"font-family: Meiryo; font-size: 60px\">{{kanji}}</strong><br><span style=\"font-family: Meiryo; font-size: 30px;\">{{kana}}</span>"
-            }
+                "qfmt": '<strong style="font-size: 40px;">{{meaning}}</strong>',
+                "afmt": '{{FrontSide}}<hr id="answer"><strong style="font-family: Meiryo; font-size: 60px">{{kanji}}</strong><br><span style="font-family: Meiryo; font-size: 30px;">{{kana}}</span>',
+            },
         ],
-        css = """
+        css="""
                 .card {
                     font-family: arial;
                     font-size: 20px;
@@ -75,10 +71,13 @@ def generate_model(model_name: str, model_id: int) -> genanki.Model:
                 .card2 {
                     background-color: #969696;
                 }
-            """
+            """,
     )
 
-def export(file: str | Path, name: str, dest: str | Path, verbose: bool=False, logger: logging.Logger=_LOGGER) -> int:
+
+def export(
+    file: str | Path, name: str, dest: str | Path, verbose: bool = False, logger: logging.Logger = _LOGGER
+) -> int:
     """
     Convert a Midori CSV file into an APKG deck.
 
@@ -105,8 +104,8 @@ def export(file: str | Path, name: str, dest: str | Path, verbose: bool=False, l
         for row in reader:
             notes.append(
                 genanki.Note(
-                    model = generate_model("JA-EN", model_id),
-                    fields = [row[0], row[1], row[2]],
+                    model=generate_model("JA-EN", model_id),
+                    fields=[row[0], row[1], row[2]],
                 )
             )
 
