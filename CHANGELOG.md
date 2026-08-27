@@ -12,8 +12,14 @@
   rendered as `[ INF ]`.
 - [`ruff`](https://docs.astral.sh/ruff/) to the `dev` dependency group for linting and formatting,
   configured in `pyproject.toml` to enforce Google-style docstrings.
+- Shell completion for bash, zsh, fish, and PowerShell via `midorianki --install-completion`,
+  provided by `typer`.
 
 ### Changed
+
+- Migrated the command-line interface from `argparse` to
+  [`typer`](https://typer.tiangolo.com/). `--verbose` and `--no-verbose` are now global options that
+  apply to every subcommand and must precede it.
 
 - Migrated the build system from `setup.py` (setuptools) to a `pyproject.toml`-based build using the
   `hatchling` backend, managed with [`uv`](https://docs.astral.sh/uv/).

@@ -17,6 +17,7 @@ authors = [
 dependencies = [
     "genanki>=0.13.1",
     "rich>=15.0.0",
+    "typer>=0.27.1",
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",

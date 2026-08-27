@@ -76,6 +76,19 @@ midorianki convert --file <csv> [--name <string>|--dest <path>]
 The deck name defaults to `csv`'s file stem if `--name` is not specified.
 The default target directory is always the current working directory.
 
+Pass `--no-verbose` before the command to silence status output (errors are still
+reported); it is a global flag, so it must precede the subcommand:
+
+```cli
+midorianki --no-verbose convert --file <csv>
+```
+
+Install shell completion for your shell (bash, zsh, fish, or PowerShell) with:
+
+```cli
+midorianki --install-completion
+```
+
 ### Example
 
 ```bash
