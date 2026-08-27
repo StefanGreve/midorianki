@@ -23,7 +23,14 @@ import random
 from pathlib import Path
 
 import genanki
-from rich.progress import track
+from rich.progress import (
+    BarColumn,
+    MofNCompleteColumn,
+    Progress,
+    TaskProgressColumn,
+    TextColumn,
+    TimeElapsedColumn,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -112,8 +119,20 @@ def export(
     deck = genanki.Deck(model_id, name or Path(file).stem)
     package = genanki.Package(deck)
 
-    for note in track(notes, description=f"[bold blue] Convert ID={model_id}", disable=not verbose):
-        deck.add_note(note)
+    with Progress(
+        TextColumn("[bold blue]ID={task.fields[model_id]}"),
+        BarColumn(),
+        TaskProgressColumn(),
+        MofNCompleteColumn(),
+        TimeElapsedColumn(),
+        disable=not verbose,
+    ) as progress:
+        if verbose:
+            progress.console.print(f"[bold]Convert {str(file)!r}[/]")
+        task = progress.add_task("", total=len(notes), model_id=model_id)
+        for note in notes:
+            deck.add_note(note)
+            progress.advance(task)
 
     deck_name = Path(dest) / f"{deck.name}.apkg"
     package.write_to_file(deck_name)
