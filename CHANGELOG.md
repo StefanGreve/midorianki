@@ -12,15 +12,15 @@
   rendered as `[ INF ]`.
 - [`ruff`](https://docs.astral.sh/ruff/) to the `dev` dependency group for linting and formatting,
   configured in `pyproject.toml` to enforce Google-style docstrings.
-- Shell completion for bash, zsh, fish, and PowerShell via `midorianki --install-completion`,
-  provided by `typer`.
+- Shell completion for bash, zsh, fish, and PowerShell, provided by `typer`. Install it into the
+  current shell with `midorianki --install-completion`, or print the completion script to stdout with
+  `midorianki --show-completion` to place it manually.
 
 ### Changed
 
 - Migrated the command-line interface from `argparse` to
   [`typer`](https://typer.tiangolo.com/). `--verbose` and `--no-verbose` are now global options that
   apply to every subcommand and must precede it.
-
 - Migrated the build system from `setup.py` (setuptools) to a `pyproject.toml`-based build using the
   `hatchling` backend, managed with [`uv`](https://docs.astral.sh/uv/).
 - Consolidated the runtime and development dependencies from `requirements/*.txt` into

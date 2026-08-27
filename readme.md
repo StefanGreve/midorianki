@@ -8,7 +8,7 @@
         <img src="https://github.com/StefanGreve/midorianki/actions/workflows/codeql-analysis.yml/badge.svg">
     </a>
     <a href="https://github.com/StefanGreve/midorianki" title="Release Version">
-        <img src="https://img.shields.io/badge/Release-3.1.0%20-blue">
+        <img src="https://img.shields.io/badge/Release-3.1.0-blue">
     </a>
     <a title="Supported Python Versions">
         <img src="https://img.shields.io/badge/Python-3.11%20--%203.14-blue">
@@ -21,7 +21,7 @@
 This project is a CLI that converts CSV files from
 [Midori](https://apps.apple.com/us/app/midori-japanese-dictionary/id385231773)
 into [Anki](https://apps.ankiweb.net/) APKG decks. You can also use your own CSV
-files as long they follow the `kanji,kana,meaning` convention mandated by the
+files as long as they follow the `kanji,kana,meaning` convention mandated by the
 `midorianki` application.
 
 ## Screenshot
@@ -63,14 +63,14 @@ Run the application from the development environment with `uv run midorianki`.
 
 Get help:
 
-```cli
+```bash
 midorianki --help
 ```
 
 Create a new Anki deck:
 
-```cli
-midorianki convert --file <csv> [--name <string>|--dest <path>]
+```bash
+midorianki convert --file <csv> [--name <string>] [--dest <path>]
 ```
 
 The deck name defaults to `csv`'s file stem if `--name` is not specified.
@@ -79,14 +79,20 @@ The default target directory is always the current working directory.
 Pass `--no-verbose` before the command to silence status output (errors are still
 reported); it is a global flag, so it must precede the subcommand:
 
-```cli
+```bash
 midorianki --no-verbose convert --file <csv>
 ```
 
 Install shell completion for your shell (bash, zsh, fish, or PowerShell) with:
 
-```cli
+```bash
 midorianki --install-completion
+```
+
+Or print the completion script to stdout and place it yourself:
+
+```bash
+midorianki --show-completion
 ```
 
 ### Example
