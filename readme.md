@@ -85,3 +85,13 @@ midorianki convert --file ./test.csv --name "deck_title" --dest $HOME
 ```
 
 </details>
+
+## Development
+
+<details>
+<summary>Conventions</summary>
+
+Public functions are documented with
+[Google-style docstrings](https://github.com/google/styleguide/blob/gh-pages/pyguide.md#38-comments-and-docstrings).
+
+</details>

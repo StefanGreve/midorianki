@@ -18,21 +18,32 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 import csv
+import logging
 import random
 from pathlib import Path
-from typing import Dict, Union
+from typing import Union
 
 import genanki
 
 from rich.progress import track
 
-from .utils import print_on_success
+# Records propagate to the "midorianki" package logger, which init_logger()
+# configures with the file and console handlers.
+_LOGGER = logging.getLogger(__name__)
 
 
-def generate_model(model_name: str, model_id: int) -> Dict:
+def generate_model(model_name: str, model_id: int) -> genanki.Model:
     """
-    Generates a model that defines the template used for deck this creation.
-    Expects all fields to follow the order of `kanji,kana,meaning`.
+    Build the genanki model that defines the note template for a deck.
+
+    Expects all fields to follow the order of ``kanji,kana,meaning``.
+
+    Args:
+        model_name: Human-readable name of the model (e.g. ``"JA-EN"``).
+        model_id: Numeric identifier assigned to the generated model.
+
+    Returns:
+        The configured genanki model.
     """
     return genanki.Model(
         model_id,
@@ -71,11 +82,24 @@ def generate_model(model_name: str, model_id: int) -> Dict:
             """
     )
 
-def export(file: Union[str, Path], name: str, dest: Union[str, Path], verbose: bool=False) -> int:
+def export(file: Union[str, Path], name: str, dest: Union[str, Path], verbose: bool=False, logger: logging.Logger=_LOGGER) -> int:
     """
-    Converts CSV files into APKG decks. Expects all fields in the CSV file to
-    follow the order of `kanji,kana,meaning`. Returns a randomly generated model
-    id.
+    Convert a Midori CSV file into an APKG deck.
+
+    Expects all fields in the CSV file to follow the order of
+    ``kanji,kana,meaning``.
+
+    Args:
+        file: Path to the source CSV file.
+        name: Deck title and output filename stem; falls back to the CSV file
+            stem when falsy.
+        dest: Directory in which the ``.apkg`` file is written.
+        verbose: When ``True``, display the conversion progress bar.
+        logger: Logger used to report completion; defaults to this module's
+            logger, whose records propagate to the configured package logger.
+
+    Returns:
+        The randomly generated model id.
     """
     notes = []
     model_id = random.randrange(1 << 30, 1 << 31)
@@ -99,6 +123,6 @@ def export(file: Union[str, Path], name: str, dest: Union[str, Path], verbose: b
     deck_name = Path(dest) / f"{deck.name}.apkg"
     package.write_to_file(deck_name)
 
-    print_on_success(f"Created [path]{str(deck_name.name)!r}[/] with {len(deck.notes)} new cards in [path]{str(deck_name.parent)!r}[/].", verbose)
+    logger.info(f"Created {str(deck_name.name)!r} with {len(deck.notes)} new cards in {str(deck_name.parent)!r}.")
 
     return model_id

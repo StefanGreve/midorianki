@@ -5,6 +5,11 @@
 ### Added
 
 - Support for Python 3.12, 3.13, and 3.14.
+- A `logger` module exposing `init_logger(enable_console_logger)`, which configures the package-root
+  logger: the file log (`error.log`) is always written, INFO and WARNING records reach the console
+  only when enabled, and errors are always reported to stderr.
+- Short, color-highlighted log level names on the console (`DBG`, `INF`, `WRN`, `ERR`, `FTL`),
+  rendered as `[ INF ]`.
 
 ### Changed
 
@@ -12,10 +17,16 @@
   `hatchling` backend, managed with [`uv`](https://docs.astral.sh/uv/).
 - Consolidated the runtime and development dependencies from `requirements/*.txt` into
   `pyproject.toml`.
+- Replaced the `colorama` and `tqdm` dependencies with [`rich`](https://github.com/Textualize/rich)
+  for progress bars and terminal output.
+- Routed all status and error output through the `rich`-backed logger instead of ad-hoc print helpers.
 
 ### Removed
 
 - `setup.py`, `MANIFEST.in`, and the `requirements/*.txt` files, superseded by `pyproject.toml`.
+- The `print_on_success`, `print_on_info`, `print_on_warning`, and `print_on_error` helpers, along
+  with the module-level `logger`, `shutdown`, and `clear` utilities in `utils`, superseded by the new
+  `logger` module.
 
 ## Version 3.0.1 (26 Aug 2024)
 
