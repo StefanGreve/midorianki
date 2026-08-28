@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 3.1.0 (Unreleased)
+## Version 4.0.0 (Unreleased)
 
 ### Added
 
@@ -21,6 +21,7 @@
 
 ### Changed
 
+- Renamed the `--file` option to `--path` on both the `convert` and `import` commands.
 - Migrated the command-line interface from `argparse` to
   [`typer`](https://typer.tiangolo.com/). `--verbose` and `--no-verbose` are now global options that
   apply to every subcommand and must precede it.

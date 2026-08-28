@@ -8,7 +8,7 @@
         <img src="https://github.com/StefanGreve/midorianki/actions/workflows/codeql-analysis.yml/badge.svg">
     </a>
     <a href="https://github.com/StefanGreve/midorianki" title="Release Version">
-        <img src="https://img.shields.io/badge/Release-3.1.0-blue">
+        <img src="https://img.shields.io/badge/Release-4.0.0-blue">
     </a>
     <a title="Supported Python Versions">
         <img src="https://img.shields.io/badge/Python-3.11%20--%203.14-blue">
@@ -28,13 +28,10 @@ files as long as they follow the `kanji,kana,meaning` convention mandated by the
 
 ![Screenshot](https://raw.githubusercontent.com/StefanGreve/midorianki/abb402bd031616eb0051dc7f1199d18aa6f2e89b/samples/screenshot.png)
 
-## Setup
+## Installation
 
-Follow along the setup guide below to install this terminal application. See also
+Follow the installation steps below to set up this terminal application. See also
 `pyproject.toml` to examine the dependency graph.
-
-<details>
-<summary>Installation</summary>
 
 [`uv`](https://docs.astral.sh/uv/) is the recommended way to install this
 Python application in an isolated environment:
@@ -43,23 +40,9 @@ Python application in an isolated environment:
 uv tool install git+https://github.com/StefanGreve/midorianki.git
 ```
 
-Set up a development environment with `uv`, which creates a managed virtual
-environment and installs the runtime and dev dependencies:
-
-```bash
-git clone https://github.com/StefanGreve/midorianki.git
-cd midorianki/
-uv sync --all-groups
-```
-
-Run the application from the development environment with `uv run midorianki`.
-
-</details>
+Once installed, run it directly with `midorianki <args>`.
 
 ## Basic Usage
-
-<details>
-<summary>Command Line Usage</summary>
 
 Get help:
 
@@ -70,7 +53,7 @@ midorianki --help
 Create a new Anki deck:
 
 ```bash
-midorianki convert --file <csv> [--name <string>] [--dest <path>]
+midorianki convert --path <csv> [--name <string>] [--dest <path>]
 ```
 
 The deck name defaults to `csv`'s file stem if `--name` is not specified.
@@ -80,7 +63,7 @@ Pass `--no-verbose` before the command to silence status output (errors are stil
 reported); it is a global flag, so it must precede the subcommand:
 
 ```bash
-midorianki --no-verbose convert --file <csv>
+midorianki --no-verbose convert --path <csv>
 ```
 
 Install shell completion for your shell (bash, zsh, fish, or PowerShell) with:
@@ -95,37 +78,46 @@ Or print the completion script to stdout and place it yourself:
 midorianki --show-completion
 ```
 
-### Example
-
-```bash
-curl https://gist.githubusercontent.com/StefanGreve/5d8d3111eb4e29bbce691f6ef2ebb656/raw/4a8b081086fa4174b64c6f86be33fb07fa36590f/kaze-no-uta-wo-kike.csv --output test.csv
-# creates a deck_title.apkg file in the home directory
-midorianki convert --file ./test.csv --name "deck_title" --dest $HOME
-```
-
-</details>
-
-<details>
-<summary>Import into Anki</summary>
-
 The `import` command pushes an existing `.apkg` deck straight into your local
 Anki collection via [AnkiConnect](https://ankiweb.net/shared/info/2055492159),
 from where Anki's own sync carries it to AnkiWeb. Two prerequisites:
 
-- Anki must be **running**.
-- The AnkiConnect add-on (code `2055492159`) must be installed.
+1. Anki must be **running**.
+2. The AnkiConnect add-on (code `2055492159`) must be installed.
+
+> [!TIP]
+> To install the `AnkiConnect` add-on, navigate to `Tools > Add-ons`,
+> click on `Get Add-ons...` and enter the code `2055492159`.
 
 ```bash
-midorianki import --file ./deck_title.apkg
+midorianki import --path ./deck_title.apkg
 ```
 
 The deck lands under the name baked into the `.apkg`; use `convert --name` to set
 that name beforehand. Pass `--host`/`--port` if AnkiConnect does not listen on the
 default `127.0.0.1:8765`.
 
-</details>
+### Example
+
+```bash
+curl https://gist.githubusercontent.com/StefanGreve/5d8d3111eb4e29bbce691f6ef2ebb656/raw/4a8b081086fa4174b64c6f86be33fb07fa36590f/kaze-no-uta-wo-kike.csv --output test.csv
+# creates a deck_title.apkg file in the home directory
+uv run midorianki convert --path ./test.csv --name "deck_title" --dest $HOME
+uv run midorianki import --path $HOME/deck_title.apkg
+```
 
 ## Developer Notes
+
+Set up a development environment with `uv`, which creates a managed virtual
+environment and installs the runtime and dev dependencies:
+
+```bash
+git clone https://github.com/StefanGreve/midorianki.git
+cd midorianki/
+uv sync --all-groups
+```
+
+Run the application from this environment with `uv run midorianki <args>`.
 
 Public functions are documented with
 [Google-style docstrings](https://github.com/google/styleguide/blob/gh-pages/pyguide.md#38-comments-and-docstrings).

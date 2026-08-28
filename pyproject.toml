@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "midorianki"
-version = "3.1.0"
+version = "4.0.0"
 description = "Tool for converting CSV files from Midori into APKG decks."
 readme = "readme.md"
 requires-python = ">=3.11"

@@ -61,7 +61,7 @@ def main(
 @app.command(help="Convert CSV files into APKG decks.")
 def convert(
     ctx: typer.Context,
-    file: Annotated[Path, typer.Option("--file", metavar="PATH", help="path to CSV file")],
+    path: Annotated[Path, typer.Option("--path", metavar="PATH", help="path to CSV file")],
     dest: Annotated[
         Path | None, typer.Option("--dest", metavar="PATH", help="APKG target directory (default: current directory)")
     ] = None,
@@ -72,13 +72,13 @@ def convert(
 
     Args:
         ctx: Invocation context providing the shared logger and verbosity.
-        file: Path to the source CSV file.
+        path: Path to the source CSV file.
         dest: Directory in which the ``.apkg`` file is written; defaults to the
             current working directory.
         name: Deck filename and title; defaults to the CSV file stem.
     """
     try:
-        export(file, name, dest or Path.cwd(), ctx.obj.verbose, ctx.obj.logger)
+        export(path, name, dest or Path.cwd(), ctx.obj.verbose, ctx.obj.logger)
     except Exception as error:
         # route failures through the logger so they reach both stderr and the
         # file log, then exit non-zero instead of raising a Typer traceback
@@ -89,7 +89,7 @@ def convert(
 @app.command(name="import", help="Import an APKG deck into a running Anki via AnkiConnect.")
 def import_(
     ctx: typer.Context,
-    file: Annotated[Path, typer.Option("--file", metavar="PATH", help="path to APKG deck")],
+    path: Annotated[Path, typer.Option("--path", metavar="PATH", help="path to APKG deck")],
     host: Annotated[str, typer.Option("--host", help="AnkiConnect host")] = "127.0.0.1",
     port: Annotated[int, typer.Option("--port", help="AnkiConnect port")] = 8765,
 ) -> None:
@@ -98,12 +98,12 @@ def import_(
 
     Args:
         ctx: Invocation context providing the shared logger and verbosity.
-        file: Path to the ``.apkg`` deck to import.
+        path: Path to the ``.apkg`` deck to import.
         host: AnkiConnect host; defaults to ``127.0.0.1``.
         port: AnkiConnect port; defaults to ``8765``.
     """
     try:
-        import_deck(file, host=host, port=port, logger=ctx.obj.logger)
+        import_deck(path, host=host, port=port, logger=ctx.obj.logger)
     except Exception as error:
         # mirror convert: log the failure (stderr + file log) and exit non-zero
         ctx.obj.logger.error(str(error))

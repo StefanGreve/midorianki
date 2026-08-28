@@ -34,4 +34,4 @@ jobs:
       run: |
         uv run midorianki --version
         curl https://gist.githubusercontent.com/StefanGreve/5d8d3111eb4e29bbce691f6ef2ebb656/raw/4a8b081086fa4174b64c6f86be33fb07fa36590f/kaze-no-uta-wo-kike.csv --output test.csv
-        uv run midorianki convert --file ./test.csv --name "my_deck" --dest $HOME
+        uv run midorianki convert --path ./test.csv --name "my_deck" --dest $HOME
