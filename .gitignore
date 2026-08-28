@@ -139,3 +139,7 @@ exp.py
 benchmark.py
 # interactive script
 iexp.py
+
+# custom
+test.csv
+*.apkg

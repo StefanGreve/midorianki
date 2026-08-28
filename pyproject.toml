@@ -1,0 +1,72 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "midorianki"
+version = "4.0.0"
+description = "Tool for converting CSV files from Midori into APKG decks."
+readme = "readme.md"
+requires-python = ">=3.11"
+license = "GPL-3.0-only"
+license-files = ["LICENSE"]
+keywords = ["cli", "terminal", "utils", "anki"]
+authors = [
+    { name = "Stefan Greve", email = "greve.stefan@outlook.jp" },
+]
+dependencies = [
+    "genanki>=0.13.1",
+    "rich>=15.0.0",
+    "typer>=0.27.1",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Operating System :: OS Independent",
+    "Topic :: Terminals",
+    "Topic :: Utilities",
+]
+
+[project.urls]
+Homepage = "https://github.com/StefanGreve/midorianki"
+"Source Code" = "https://github.com/StefanGreve/midorianki"
+"Bug Reports" = "https://github.com/StefanGreve/midorianki/issues"
+Changelog = "https://github.com/StefanGreve/midorianki/blob/master/CHANGELOG.md"
+
+[project.scripts]
+midorianki = "midorianki.__main__:main"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.16.4",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/midorianki"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "D",   # pydocstyle (docstring conventions)
+]
+ignore = [
+    "E501",  # line-too-long: delegated to `ruff format`, which leaves string literals intact
+    "D212",  # multi-line-summary-first-line: this project starts the summary on the second line
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
