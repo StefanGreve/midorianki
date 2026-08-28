@@ -4,7 +4,7 @@
     <a href="https://github.com/StefanGreve/midorianki/actions/workflows/python-app.yml" title="Continuous Integration" target="_blank">
         <img src="https://github.com/StefanGreve/midorianki/actions/workflows/python-app.yml/badge.svg">
     </a>
-    <a href="https://github.com/StefanGreve/midorianki/actions/workflows/codeql-analysis.yml" title="Code QL Analysis" target="_blank">
+    <a href="https://github.com/StefanGreve/midorianki/actions/workflows/codeql-analysis.yml" title="CodeQL Analysis" target="_blank">
         <img src="https://github.com/StefanGreve/midorianki/actions/workflows/codeql-analysis.yml/badge.svg">
     </a>
     <a href="https://github.com/StefanGreve/midorianki" title="Release Version">
@@ -72,22 +72,12 @@ Install shell completion for your shell (bash, zsh, fish, or PowerShell) with:
 midorianki --install-completion
 ```
 
-Or print the completion script to stdout and place it yourself:
-
-```bash
-midorianki --show-completion
-```
+Or print the completion script to stdout and place it yourself by using the
+`--show-completion` flag.
 
 The `import` command pushes an existing `.apkg` deck straight into your local
 Anki collection via [AnkiConnect](https://ankiweb.net/shared/info/2055492159),
-from where Anki's own sync carries it to AnkiWeb. Two prerequisites:
-
-1. Anki must be **running**.
-2. The AnkiConnect add-on (code `2055492159`) must be installed.
-
-> [!TIP]
-> To install the `AnkiConnect` add-on, navigate to `Tools > Add-ons`,
-> click on `Get Add-ons...` and enter the code `2055492159`.
+from where Anki's own sync carries it to AnkiWeb.
 
 ```bash
 midorianki import --path ./deck_title.apkg
@@ -97,13 +87,21 @@ The deck lands under the name baked into the `.apkg`; use `convert --name` to se
 that name beforehand. Pass `--host`/`--port` if AnkiConnect does not listen on the
 default `127.0.0.1:8765`.
 
+> [!IMPORTANT]
+> In order to use the `import` command, you need the `AnkiConnect` add-on. To install it, navigate to
+> `Tools > Add-ons`, click `Get Add-ons...` and enter the code `2055492159`. Afterwards, restart Anki.
+> Anki must be running whenever you import a deck.
+
 ### Example
 
 ```bash
+# download a test file
 curl https://gist.githubusercontent.com/StefanGreve/5d8d3111eb4e29bbce691f6ef2ebb656/raw/4a8b081086fa4174b64c6f86be33fb07fa36590f/kaze-no-uta-wo-kike.csv --output test.csv
+
 # creates a deck_title.apkg file in the home directory
-uv run midorianki convert --path ./test.csv --name "deck_title" --dest $HOME
-uv run midorianki import --path $HOME/deck_title.apkg
+midorianki convert --path ./test.csv --name "deck_title" --dest $HOME
+# import the deck into Anki
+midorianki import --path $HOME/deck_title.apkg
 ```
 
 ## Developer Notes
@@ -120,10 +118,7 @@ uv sync --all-groups
 Run the application from this environment with `uv run midorianki <args>`.
 
 Public functions are documented with
-[Google-style docstrings](https://github.com/google/styleguide/blob/gh-pages/pyguide.md#38-comments-and-docstrings).
-
-[`ruff`](https://docs.astral.sh/ruff/) enforces linting (including the docstring
-convention) and formatting; its configuration lives in `pyproject.toml`. Run the
+[Google-style docstrings](https://github.com/google/styleguide/blob/gh-pages/pyguide.md#38-comments-and-docstrings). [`ruff`](https://docs.astral.sh/ruff/) enforces linting (including the docstring convention) and formatting; its configuration lives in `pyproject.toml`. Run the
 checks from the development environment:
 
 ```bash
