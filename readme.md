@@ -105,6 +105,26 @@ midorianki convert --file ./test.csv --name "deck_title" --dest $HOME
 
 </details>
 
+<details>
+<summary>Import into Anki</summary>
+
+The `import` command pushes an existing `.apkg` deck straight into your local
+Anki collection via [AnkiConnect](https://ankiweb.net/shared/info/2055492159),
+from where Anki's own sync carries it to AnkiWeb. Two prerequisites:
+
+- Anki must be **running**.
+- The AnkiConnect add-on (code `2055492159`) must be installed.
+
+```bash
+midorianki import --file ./deck_title.apkg
+```
+
+The deck lands under the name baked into the `.apkg`; use `convert --name` to set
+that name beforehand. Pass `--host`/`--port` if AnkiConnect does not listen on the
+default `127.0.0.1:8765`.
+
+</details>
+
 ## Developer Notes
 
 Public functions are documented with

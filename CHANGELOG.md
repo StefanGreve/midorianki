@@ -4,6 +4,9 @@
 
 ### Added
 
+- An `import` command that pushes an existing APKG deck into a running Anki via the
+  [AnkiConnect](https://ankiweb.net/shared/info/2055492159) add-on (code `2055492159`), from where
+  Anki's own sync carries it to AnkiWeb.
 - Support for Python 3.12, 3.13, and 3.14.
 - A `logger` module exposing `init_logger(enable_console_logger)`, which configures the package-root
   logger: the file log (`error.log`) is always written, INFO and WARNING records reach the console

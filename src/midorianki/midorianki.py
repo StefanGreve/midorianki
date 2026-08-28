@@ -107,8 +107,7 @@ def export(
     model_id = random.randrange(1 << 30, 1 << 31)
 
     with open(file, encoding="utf-8") as file_handler:
-        reader = csv.reader(file_handler)
-        for row in reader:
+        for row in csv.reader(file_handler):
             notes.append(
                 genanki.Note(
                     model=generate_model("JA-EN", model_id),
@@ -119,17 +118,21 @@ def export(
     deck = genanki.Deck(model_id, name or Path(file).stem)
     package = genanki.Package(deck)
 
-    with Progress(
+    progress = Progress(
         TextColumn("[bold blue]ID={task.fields[model_id]}"),
         BarColumn(),
         TaskProgressColumn(),
         MofNCompleteColumn(),
         TimeElapsedColumn(),
         disable=not verbose,
-    ) as progress:
+    )
+
+    with progress:
         if verbose:
             progress.console.print(f"[bold]Convert {str(file)!r}[/]")
+
         task = progress.add_task("", total=len(notes), model_id=model_id)
+
         for note in notes:
             deck.add_note(note)
             progress.advance(task)

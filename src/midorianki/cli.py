@@ -8,6 +8,7 @@ from typing import Annotated
 
 import typer
 
+from .ankiconnect import import_deck
 from .logger import init_logger
 from .metadata import __package__, __version__
 from .midorianki import export
@@ -81,5 +82,29 @@ def convert(
     except Exception as error:
         # route failures through the logger so they reach both stderr and the
         # file log, then exit non-zero instead of raising a Typer traceback
+        ctx.obj.logger.error(str(error))
+        raise typer.Exit(code=1) from error
+
+
+@app.command(name="import", help="Import an APKG deck into a running Anki via AnkiConnect.")
+def import_(
+    ctx: typer.Context,
+    file: Annotated[Path, typer.Option("--file", metavar="PATH", help="path to APKG deck")],
+    host: Annotated[str, typer.Option("--host", help="AnkiConnect host")] = "127.0.0.1",
+    port: Annotated[int, typer.Option("--port", help="AnkiConnect port")] = 8765,
+) -> None:
+    """
+    Import an APKG deck into a running Anki via AnkiConnect.
+
+    Args:
+        ctx: Invocation context providing the shared logger and verbosity.
+        file: Path to the ``.apkg`` deck to import.
+        host: AnkiConnect host; defaults to ``127.0.0.1``.
+        port: AnkiConnect port; defaults to ``8765``.
+    """
+    try:
+        import_deck(file, host=host, port=port, logger=ctx.obj.logger)
+    except Exception as error:
+        # mirror convert: log the failure (stderr + file log) and exit non-zero
         ctx.obj.logger.error(str(error))
         raise typer.Exit(code=1) from error
