@@ -1,6 +1,13 @@
 # Changelog
 
-## Version 4.0.0 (Unreleased)
+## Version 4.0.0 (28 Aug 2026)
+
+This release marks a new milestone for this project. The build tools as well as the underlying
+implementation have been brought up to speed with modern development best practices. Alongside
+this change, a new `import` command has been implemented that bridges the gap between creating
+new decks and importing them into Anki autonomously. Note that for these and other reasons (such
+as the renaming of the `--file` argument to `--path`), this release contains breaking changes.
+However, the `convert` command still produces exactly the same output as before.
 
 ### Added
 
@@ -32,6 +39,8 @@
 - Replaced the `colorama` and `tqdm` dependencies with [`rich`](https://github.com/Textualize/rich)
   for progress bars and terminal output.
 - Routed all status and error output through the `rich`-backed logger instead of ad-hoc print helpers.
+- Bumped the GitHub Actions workflows to Node 24 runtimes: `actions/checkout` from v4 to v5, and the
+  CodeQL action from v3 to v4.
 
 ### Removed
 
