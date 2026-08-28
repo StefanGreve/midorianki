@@ -20,7 +20,7 @@ jobs:
         os: [ ubuntu-latest, macOS-latest, windows-latest ]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Set up uv
       uses: astral-sh/setup-uv@v5
       with:
