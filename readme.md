@@ -8,7 +8,7 @@
         <img src="https://github.com/StefanGreve/midorianki/actions/workflows/codeql-analysis.yml/badge.svg">
     </a>
     <a href="https://github.com/StefanGreve/midorianki" title="Release Version">
-        <img src="https://img.shields.io/badge/Release-4.0.0-blue">
+        <img src="https://img.shields.io/badge/Release-4.1.0-blue">
     </a>
     <a title="Supported Python Versions">
         <img src="https://img.shields.io/badge/Python-3.11%20--%203.14-blue">
@@ -102,6 +102,34 @@ curl https://gist.githubusercontent.com/StefanGreve/5d8d3111eb4e29bbce691f6ef2eb
 midorianki convert --path ./test.csv --name "deck_title" --dest $HOME
 # import the deck into Anki
 midorianki import --path $HOME/deck_title.apkg
+```
+
+## Environment Variables
+
+The following environment variables adjust the application's behavior:
+
+| Variable | Value | Effect |
+| --- | --- | --- |
+| `MIDORIANKI_ENABLE_FILELOGGER` | `1` | Enables the file logger, which writes detailed records to `error.log`. When unset (or any other value), no log file is written. Console and stderr output are unaffected. |
+
+The `error.log` file is written to a platform-specific application directory:
+
+| Platform | Location |
+| --- | --- |
+| Windows | `%LOCALAPPDATA%\midorianki\error.log` |
+| macOS | `~/Library/Application Support/midorianki/error.log` |
+| Other | `~/.config/midorianki/error.log` |
+
+Enable it before invoking the application:
+
+```bash
+export MIDORIANKI_ENABLE_FILELOGGER=1
+midorianki convert --path ./test.csv
+```
+
+```pwsh
+$env:MIDORIANKI_ENABLE_FILELOGGER = "1"
+midorianki convert --path ./test.csv
 ```
 
 ## Developer Notes

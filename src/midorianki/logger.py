@@ -3,6 +3,7 @@
 """Logging configuration for the midorianki package."""
 
 import logging
+import os
 from logging import Logger
 
 from rich.console import Console
@@ -54,15 +55,17 @@ def init_logger(enable_console_logger: bool) -> Logger:
     """
     Configure and return the package-root logger.
 
-    A file handler that writes detailed records to ``error.log`` and an error
-    handler that reports errors to stderr are always attached. Handlers are
-    attached to the package-root logger so that records from any submodule
-    (``getLogger(__name__)``) propagate up to them.
+    An error handler that reports errors to stderr is always attached. A file
+    handler that writes detailed records to ``error.log`` is attached only when
+    the ``MIDORIANKI_ENABLE_FILELOGGER`` environment variable is set to ``"1"``.
+    Handlers are attached to the package-root logger so that records from any
+    submodule (``getLogger(__name__)``) propagate up to them.
 
     Args:
         enable_console_logger: When ``True``, also emit INFO and WARNING records
-            to stdout via rich. Errors and the file log are unaffected by this
-            flag.
+            to stdout via rich. Errors are always reported to stderr regardless
+            of this flag; file logging is governed by
+            ``MIDORIANKI_ENABLE_FILELOGGER`` instead.
 
     Returns:
         The configured package-root logger.
@@ -73,12 +76,15 @@ def init_logger(enable_console_logger: bool) -> Logger:
     if logger.handlers:
         return logger
 
-    log_file_path = get_resource_path(__package__) / "error.log"
-    _file_handler = logging.FileHandler(log_file_path)
-    _file_handler.setFormatter(
-        logging.Formatter("%(asctime)s::%(levelname)s::%(lineno)d::%(name)s::%(message)s", datefmt="%Y-%m-%d %H:%M:%S")
-    )
-    logger.addHandler(_file_handler)
+    if os.environ.get("MIDORIANKI_ENABLE_FILELOGGER") == "1":
+        log_file_path = get_resource_path(__package__) / "error.log"
+        _file_handler = logging.FileHandler(log_file_path)
+        _file_handler.setFormatter(
+            logging.Formatter(
+                "%(asctime)s::%(levelname)s::%(lineno)d::%(name)s::%(message)s", datefmt="%Y-%m-%d %H:%M:%S"
+            )
+        )
+        logger.addHandler(_file_handler)
 
     error_console = Console(stderr=True)
     _error_handler = BracketRichHandler(console=error_console, level=logging.ERROR, show_time=False, show_path=False)

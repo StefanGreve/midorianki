@@ -1,5 +1,17 @@
 # Changelog
 
+## Version 4.1.0 (WIP)
+
+### Added
+
+- A `MIDORIANKI_ENABLE_FILELOGGER` environment variable. Set it to `1` to write detailed records to
+  `error.log`; when unset, no log file is written.
+
+### Changed
+
+- File logging is now opt-in. Previously `error.log` was always written; it is now only produced when
+  `MIDORIANKI_ENABLE_FILELOGGER=1`.
+
 ## Version 4.0.0 (28 Aug 2026)
 
 This release marks a new milestone for this project. The build tools as well as the underlying
